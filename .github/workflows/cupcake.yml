@@ -63,24 +63,9 @@ jobs:
             flavor: release
             linkage: shared
             cppstd: 17
-          - platform: ubuntu
-            runner: ubuntu-24.04
+          
           - platform: macos
             runner: macos-14
-          - platform: ubuntu
-            compiler: gcc
-            profile:
-              compiler: gcc
-              version: 13
-              cc: /usr/bin/gcc-13
-              cxx: /usr/bin/g++-13
-          - platform: ubuntu
-            compiler: clang
-            profile:
-              compiler: clang
-              version: 16
-              cc: /usr/bin/clang-16
-              cxx: /usr/bin/clang++-16
           - platform: macos
             compiler: gcc
             profile:
@@ -112,9 +97,6 @@ jobs:
         uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: '15.3'
-      - name: install Ninja on Linux
-        if: matrix.generator == 'Ninja' && startsWith(matrix.platform, 'ubuntu')
-        run: sudo apt install ninja-build
       - name: install Ninja on macOS
         if: matrix.generator == 'Ninja' && startsWith(matrix.platform, 'macos')
         run: brew install ninja
