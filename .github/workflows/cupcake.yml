@@ -1,6 +1,8 @@
 name: issue 9997
 on:
-  push
+  pull_request:
+  push:
+    branches: '**'
     
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
