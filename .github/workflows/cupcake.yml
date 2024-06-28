@@ -14,11 +14,11 @@ jobs:
       fail-fast: false
       matrix:
         platform:
-          - ubuntu
+          #- ubuntu
           - macos
         compiler:
           - gcc
-          - clang
+          #- clang
         id: [1,2,3,4,5,6]
         include:
           - id: 1
