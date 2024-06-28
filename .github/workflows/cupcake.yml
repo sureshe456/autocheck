@@ -1,9 +1,8 @@
-name: issue 9997
+name: issue-9997
 on:
   pull_request:
   push:
     branches: '**'
-    
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -14,11 +13,11 @@ jobs:
       fail-fast: false
       matrix:
         platform:
-          #- ubuntu
+          - ubuntu
           - macos
         compiler:
           - gcc
-          #- clang
+          - clang
         id: [1,2,3,4,5,6]
         include:
           - id: 1
@@ -63,9 +62,24 @@ jobs:
             flavor: release
             linkage: shared
             cppstd: 17
-          
+          - platform: ubuntu
+            runner: ubuntu-24.04
           - platform: macos
             runner: macos-14
+          - platform: ubuntu
+            compiler: gcc
+            profile:
+              compiler: gcc
+              version: 13
+              cc: /usr/bin/gcc-13
+              cxx: /usr/bin/g++-13
+          - platform: ubuntu
+            compiler: clang
+            profile:
+              compiler: clang
+              version: 16
+              cc: /usr/bin/clang-16
+              cxx: /usr/bin/clang++-16
           - platform: macos
             compiler: gcc
             profile:
@@ -97,6 +111,9 @@ jobs:
         uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: '15.3'
+      - name: install Ninja on Linux
+        if: matrix.generator == 'Ninja' && startsWith(matrix.platform, 'ubuntu')
+        run: sudo apt install ninja-build
       - name: install Ninja on macOS
         if: matrix.generator == 'Ninja' && startsWith(matrix.platform, 'macos')
         run: brew install ninja
@@ -131,6 +148,10 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           conan profile update 'conf.tools.build:exelinkflags=["-Wl,-ld_classic"]' default
+      - name: configure Conan for libstdc++
+        if: runner.os == 'Linux' || matrix.compiler == 'gcc'
+        run: |
+          conan profile update settings.compiler.libcxx=libstdc++11 default
       - run: cupcake build --verbose -G '${{ matrix.generator }}' --flavor ${{ matrix.flavor }} --${{ matrix.linkage }}
       - run: cupcake test --verbose
       - run: cupcake install
