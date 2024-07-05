@@ -1,8 +1,8 @@
 name: issue-9997
 on:
-  pull_request:
-  push:
-    branches: '**'
+  #pull_request:
+  push
+    #branches: '**'
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
