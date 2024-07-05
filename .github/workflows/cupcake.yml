@@ -65,7 +65,7 @@ jobs:
           - platform: ubuntu
             runner: ubuntu-24.04
           - platform: macos
-            runner: macos-14
+            runner: macos-13
           - platform: ubuntu
             compiler: gcc
             profile:
