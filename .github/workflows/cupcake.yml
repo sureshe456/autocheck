@@ -65,7 +65,7 @@ jobs:
           - platform: ubuntu
             runner: ubuntu-24.04
           - platform: macos
-            runner: macos-12
+            runner: macos-13
           - platform: ubuntu
             compiler: gcc
             profile:
@@ -110,7 +110,7 @@ jobs:
         if: startsWith(matrix.platform, 'macos')
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: '15.3'
+          xcode-version: '15.2'
       - name: install Ninja on Linux
         if: matrix.generator == 'Ninja' && startsWith(matrix.platform, 'ubuntu')
         run: sudo apt install ninja-build
